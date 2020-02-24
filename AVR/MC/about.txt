@@ -1,0 +1,1 @@
+this is specific library for MC atmega32
