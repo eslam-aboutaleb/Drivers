@@ -74,8 +74,7 @@ typedef struct
 	UART_TransmissionSpeed Speed;
 }UART_configType;
 
-void UART_INIT2(void);
-void UART_init(UART_configType *);
+void UART_init(UART_configType * configType_PTr);
 void UART_SendByte(uint8 data);
 void UART_SendString(uint8 * string);
 uint8 UART_RecieveByte(void);
