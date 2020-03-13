@@ -6,7 +6,6 @@
 
 void LED_Init(tLED led, tLED_State state)
 {
-    /* Add your code here! */
     /* Configure led pins as output */
     switch (led)
     {
@@ -23,18 +22,16 @@ void LED_Init(tLED led, tLED_State state)
             GPIO_InitPortPin(LED_4_PORT_CR, LED_4_PIN, GPIO_OUT);
             break;
         default:
-            /* Should not come here */
+            /* No Thing */
             break;
     }
     /* Set led state */
     LED_SetState(led, state);
-    /* End of your code */
 
 }
 
 void LED_Toggle(tLED led)
 {
-    /* Add your code here! */
     /* Toggle led */
     if (LED_GetState(led) == LED_ON)
     {
@@ -44,15 +41,11 @@ void LED_Toggle(tLED led)
         LED_SetState(led, LED_ON);
     }
 
-    /* Delay to show toggling effect */
-    //Delay_MS(LED_DELAY_MS);
-    /* End of your code */
 }
 
 
 void LED_SetState(tLED led, tLED_State state)
 {
-    /* Add your code here! */
     /* Set led state */
     switch (led)
     {
@@ -69,17 +62,15 @@ void LED_SetState(tLED led, tLED_State state)
             GPIO_WritePortPin(LED_4_PORT_DR, LED_4_PIN, state);
             break;
         default:
-            /* Should not come here */
+            /* No Thing */
             break;
     }
-    /* End of your code */
 }
 
 tLED_State LED_GetState(tLED led)
 {
     tLED_State ret = LED_OFF;
 
-    /* Add your code here! */
     /* Set led state */
     switch (led)
     {
@@ -96,16 +87,13 @@ tLED_State LED_GetState(tLED led)
             ret = GPIO_ReadPortPin(LED_4_PORT_DR, LED_4_PIN);
             break;
         default:
-            /* Should not come here */
+            /* No Thing */
             break;
     }
-    /* End of your code */
     return ret;
 }
 
 void LED_Update(void)
 {
-    LED_Toggle(LED_2);
-    LED_Toggle(LED_4);
-    Delay_MS(LED_DELAY_MS);
+
 }
