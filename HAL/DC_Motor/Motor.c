@@ -53,31 +53,27 @@ void Motor_Setstate(tMotor Motor,tMotor_State State,tMotor_Directon Direction)
 tMotor_Info Motor_GetState(tMotor Motor)
 {
     tMotor_Info Motor_ConfigType;
-    tMotor_State State_ret = Motor_OFF;
-
+    ConfigType.State=Motor_OFF;
+    ConfigType.Direction=Motor_Stopped;
     switch(Motor)
     {
     case Motor_1:
-        State_ret=GPIO_ReadPortPin(MOTOR_1_PORT_CR,MOTOR_1_POLARITY_PIN_POSITIVE);
-        if(State_ret==Motor_ON)
+        ConfigType.State=GPIO_ReadPortPin(MOTOR_1_PORT_CR,MOTOR_1_POLARITY_PIN_POSITIVE);
+        if(ConfigType.State==Motor_ON)
             {
-               ConfigType.State=Motor_ON;
                ConfigType.Direction=Motor_ClockWise;
                return Motor_ConfigType;
             }
 
-        GPIO_ReadPortPin(MOTOR_1_PORT_CR,MOTOR_1_POLARITY_PIN_NEGATIVE);
-        if(State_ret==Motor_ON)
+        ConfigType.State=GPIO_ReadPortPin(MOTOR_1_PORT_CR,MOTOR_1_POLARITY_PIN_NEGATIVE);
+        if(ConfigType.State==Motor_ON)
             {
-               ConfigType.State=Motor_ON;
                ConfigType.Direction=Motor_AntiClockWise;
                return Motor_ConfigType;
             }
 
         if(State_ret==Motor_OFF)
            {
-               ConfigType.State=Motor_OFF;
-               ConfigType.Direction=Motor_Stopped;
                return Motor_ConfigType;
            }
 
