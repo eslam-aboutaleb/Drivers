@@ -1,22 +1,18 @@
 #ifndef MOTOR_H_
 #define MOTOR_H_
 
-#define MOTOR_1_POLARITY_PIN_POSITIVE  GPIO_PIN_0
-#define MOTOR_1_POLARITY_PIN_NEGATIVE  GPIO_PIN_1
-#define MOTOR_1_PORT_DR GPIO_PORTB_DATA
-#define MOTOR_1_PORT_CR GPIO_PORTB_CONTROL
+#define MOTOR_1_BI_DIRECTION
 
+typedef enum
+{
+    Motor_1
+}tMotor;
 
 typedef struct
 {
     tMotor_State State;
     tMotor_Directon Direction;
 }tMotor_Info;
-
-typedef enum
-{
-    Motor_1
-}tMotor;
 
 typedef enum
 {
@@ -31,10 +27,11 @@ typedef enum
     Motor_Stopped
 }tMotor_Directon;
 
-
+/*Functions prototypes*/
 void Motor_Init(tMotor Motor);
 void Motor_SetState(tMotor Motor,tMotor_State State,tMotor_Directon Direction);
-void Motor_Stop(void);
+tMotor_Info Motor_GetState(tMotor Motor);
+void Motor_Stop(tMotor Motor);
 void Motor_Update(void);
 
 
