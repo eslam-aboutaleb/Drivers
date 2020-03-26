@@ -1,0 +1,1 @@
+LCD generic driver can be applied on any processor
