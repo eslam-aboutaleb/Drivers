@@ -30,10 +30,10 @@
 			 #define KEY3    '3'   
 			 #define KEYC    'C' 	
 		     					
-		    #define KEY_STAR '*'
-			#define KEY0     '0'   
-			#define KEY_HASH '#'
-			#define KEYD     'D'	
+		     #define KEY_STAR '*'
+			 #define KEY0     '0'   
+			 #define KEY_HASH '#'
+			 #define KEYD     'D'	
 		 
 		 /* /////////////////////////////////////////////////////////////////////////////////////////////////////////////////// */
 		 
