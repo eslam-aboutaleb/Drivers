@@ -1,9 +1,8 @@
-/*
+/* ///////////////////////////////////////////////////////////////////////////
  * Keypad.c
  *
- * Created: 3/30/2020 8:06:59 PM
- *  Author: Dell
- */ 
+ *  Author: Eslam Aboutaleb
+/////////////////////////////////////////////////////////////////////////// */ 
 
 #include "STD_TYPES.h"
 #include "BIT_MATH.h"
@@ -200,7 +199,7 @@ uint8 Keypad_GetKey(void)
 }
 
 
-uint8 Keypad_Update(void)
+void Keypad_Update(void)
 {
 	/* Application */
 }

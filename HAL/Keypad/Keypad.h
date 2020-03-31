@@ -1,9 +1,8 @@
-/*
- * Keybad.h
+/* ///////////////////////////////////////////////////////////////////////////
+ * Keypad.h
  *
- * Created: 3/30/2020 8:06:28 PM
- *  Author: Dell
- */ 
+ *  Author: Eslam Aboutaleb
+/////////////////////////////////////////////////////////////////////////// */ 
 
 
 #ifndef KEYPAD_H_
@@ -13,6 +12,6 @@
 /*Functions prototypes*/
 void Keypad_Init(void);
 uint8 Keypad_GetKey(void);
-uint8 Keypad_Update(void);
+void Keypad_Update(void);
 
 #endif /* KEYPAD_H_ */
