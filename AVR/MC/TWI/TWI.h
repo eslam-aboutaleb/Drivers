@@ -1,3 +1,9 @@
+/* ///////////////////////////////////////////////////////////////////////////
+ *
+ *
+ *  Author: Eslam Aboutaleb
+/////////////////////////////////////////////////////////////////////////// */ 
+
 #ifndef TWI_H_
 #define TWI_H_
 
@@ -41,8 +47,8 @@ typedef enum
 
 typedef enum
 {
-    I2C_READ     =     0x01,
-    I2C_WRITE    =    0x00
+    TWI_READ     =     0x01,
+    TWI_WRITE    =    0x00
 }TWi_RW_Commands;
 
 typedef struct
