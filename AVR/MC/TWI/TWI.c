@@ -22,7 +22,7 @@ static void TWI_Set_ACK_Bit(TWI_ACK_Bit ACK);
 
 void TWI_Init(TWi_Typedef * TWI_ConfigPtr)
 {
-	TWAR |= ((TWI_ConfigPtr->Address)<<1);
+	TWAR |= TWI_ConfigPtr->Address;
 	TWI_Prescaler_Num(TWI_ConfigPtr->Prescaler);
 	TWI_Interrupt(TWI_ConfigPtr->Interrupt_EN_DIS);
 	TWI_Genral_Call_State(TWI_ConfigPtr->GCALL_BIT);
@@ -94,10 +94,10 @@ uint8 TWI_Start(void)
 	
 	if (TWI_Get_Status()!=TWI_START)
 	{
-		return 0;
+		return False;
 	}
 	
-	return 1;
+	return True;
 }
 
 
@@ -111,10 +111,10 @@ uint8 TWI_Repeated_start(void)
 	
 	if (TWI_Get_Status() != TWI_REP_START)
 	{
-		return 0;
+		return False;
 	}
 	
-	return 1;
+	return True;
 }
 
 
@@ -122,7 +122,6 @@ uint8 TWI_Repeated_start(void)
 void TWI_Clear_Flag(void)
 {
 	SET_BIT(TWCR,TWINT);
-	
 	/*Wait until flag is set*/
 	while(BIT_IS_CLEAR(TWCR,TWINT));
 }
@@ -130,10 +129,11 @@ void TWI_Clear_Flag(void)
 
 void TWI_Stop(void)
 {
-	/*reset TWI control register*/
-	TWCR = 0;
-	TWCR= (1<<TWEN)|(1<<TWSTO)|(1<<TWINT);
-	
+    /* Clear the TWINT flag before sending the stop bit TWINT=1
+	 * send the stop bit by TWSTO=1
+	 * Enable TWI Module TWEN=1 
+	 */
+    TWCR = (1 << TWINT) | (1 << TWEN) | (1 << TWSTO);
 }
 
 
@@ -175,8 +175,6 @@ void TWI_Enable(TWI_state State)
 }
 
 
-
-
 static void TWI_Prescaler_Num(TWI_Prescaler Prescaler)
 {
 	switch(Prescaler)
@@ -204,7 +202,6 @@ static void TWI_Prescaler_Num(TWI_Prescaler Prescaler)
 		default:
 		         /*No Action*/
 		break;
-		
 	}
 }
 
@@ -229,9 +226,8 @@ uint8 TWI_Read_ACK(void)
 	}
 	else
 	{
-		return 0;
+		return False;
 	}
-	
 }
 
 
@@ -248,14 +244,18 @@ static void TWI_EnBus(void)
 	while(BIT_IS_CLEAR(TWCR,TWINT));
 }
 
-void TWI_SendAddress(uint8 Address ,TWi_RW_Commands R_W)
+uint8 TWI_SendAddress(uint8 Address ,TWi_RW_Commands R_W)
 {
 	/*Assign address +Read/write Data command */
 	TWDR=(Address)+R_W;
 	TWI_EnBus();
-	while(TWI_Get_Status() !=TWI_MT_SLA_W_ACK);
-
+	if(TWI_Get_Status() !=TWI_MT_SLA_W_ACK)
+	{
+		return False;
+	}
+	return True;
 }
+
 
 uint8 TWI_SendByte(uint8 Data)
 {
@@ -264,9 +264,9 @@ uint8 TWI_SendByte(uint8 Data)
 	TWI_EnBus();
 	if(TWI_Get_Status() !=TWI_MT_DATA_ACK)
 	{
-		return 0;
+		return False;
 	}
-	return 1;
+	return True;
 }
 
 
@@ -283,7 +283,9 @@ void TWI_SendString(uint8 *str)
 	TWI_SendByte('\0');
 }
 
-void TWI_getstring_NACK(uint8 *str){
+
+void TWI_getstring_NACK(uint8 *str)
+{
 	unsigned char temp = 0;
 	do
 	{
@@ -292,6 +294,8 @@ void TWI_getstring_NACK(uint8 *str){
 		str++;
 	}while(temp != '\0');
 }
+
+
 void TWI_getstring_ACK(uint8 *str){
 	unsigned char temp = 0;
 	do

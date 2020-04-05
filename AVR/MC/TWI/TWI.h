@@ -69,7 +69,7 @@ uint8 TWI_Get_Status(void);
 uint8 TWI_Start(void);
 uint8 TWI_Repeated_start(void);
 void TWI_Clear_Flag(void);
-void TWI_SendAddress(uint8 Address ,TWi_RW_Commands R_W);
+uint8 TWI_SendAddress(uint8 Address ,TWi_RW_Commands R_W);
 void TWI_Stop(void);
 uint8 TWI_Read_ACK(void);
 uint8 TWI_Read_NACK(void);
