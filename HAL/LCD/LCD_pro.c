@@ -250,7 +250,7 @@ static void LCD_SendPulse(void)
 
 }
 
-void LCD_goToRowColumn(uint8 row,uint8 col)
+void LCD_GoToRowColumn(uint8 row,uint8 col)
 {
 	uint8 Address=0;
 	
@@ -273,4 +273,21 @@ void LCD_goToRowColumn(uint8 row,uint8 col)
 	/* to write to a specific address in the LCD 
 	 * we need to apply the corresponding command 0x80+Address */
 	LCD_SendCommand(Address | 0x80); 
+}
+
+void LCD_SendString(uint8 *Str)
+{
+	uint8 index=0;
+	
+	while (Str[index] != '\0')
+	{
+		LCD_SendChar(Str[index]);
+		index++;
+	}
+}
+
+void LCD_SendString_RowColumn(uint8 Row,uint8 Col,uint8 *Str)
+{
+	LCD_GoToRowColumn(Row,Col); /* go to to the required LCD position */
+	LCD_SendString(Str);        /* display the string */
 }

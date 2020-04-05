@@ -9,8 +9,10 @@
 #define LCD_CONFIG_H_
 
 #include <avr/io.h>
-#undef  F_CPU
-#define F_CPU 8000000
+
+#ifndef F_CPU
+#define F_CPU 8000000UL
+#endif  
 
 #include <util/delay.h>
 #include "STD_TYPES.h"

@@ -1,8 +1,8 @@
-/*
+/* /////////////////////////////////////////////////////////////////////////////////////
  * LCD_interface.h
  *
  *  Author: Eslam Aboutaleb
- */ 
+//////////////////////////////////////////////////////////////////////////////////// */ 
 
 
 #ifndef LCD_INTERFACE_H_
@@ -74,7 +74,8 @@ typedef struct
 void LCD_Init(LCD_configType * ConfigTypePtr);
 void LCD_Clear(void);
 void LCD_SendChar(uint8 Character);
-void LCD_SendString(char *String);
-void LCD_goToRowColumn(uint8 row,uint8 col);
+void LCD_SendString(uint8 *Str);
+void LCD_GoToRowColumn(uint8 row,uint8 col);
+void LCD_SendString_RowColumn(uint8 Row,uint8 Col,uint8 *Str);
 
 #endif /* LCD_INTERFACE_H_ */
