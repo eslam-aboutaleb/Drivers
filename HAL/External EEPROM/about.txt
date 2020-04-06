@@ -1,0 +1,1 @@
+External EEPROM driver speciefic for 24C02C and its family devices
