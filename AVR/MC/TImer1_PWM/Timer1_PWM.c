@@ -40,7 +40,7 @@ void PWM_SetPrescaler(PWM_ClockPrescaler Prescaler)
 		CLEAR_BIT(TCCR1B,CS10);
 		CLEAR_BIT(TCCR1B,CS11);
 		CLEAR_BIT(TCCR1B,CS12);
-		Prescaler=0;
+		Global_Prescaler=0;
 		break;
 		case Prescaler_1:
 		SET_BIT(TCCR1B,CS10);
