@@ -8,7 +8,6 @@
 #include "STD_TYPES.h"
 #include "BIT_MATH.h"
 #include "Timer1_PWM.h"
-#include "MathFuncs.h"
 
 static void PWM_SetMode(PWM_Mode Mode);
 
@@ -36,13 +35,13 @@ void PWM_SetPrescaler(PWM_ClockPrescaler Prescaler)
 {
 	switch(Prescaler)
 	{
-		case NO_Clock_Source:
+		case PWM_NO_Clock_Source:
 		CLEAR_BIT(TCCR1B,CS10);
 		CLEAR_BIT(TCCR1B,CS11);
 		CLEAR_BIT(TCCR1B,CS12);
 		Global_Prescaler=0;
 		break;
-		case Prescaler_1:
+		case PWM_Prescaler_1:
 		SET_BIT(TCCR1B,CS10);
 		CLEAR_BIT(TCCR1B,CS11);
 		CLEAR_BIT(TCCR1B,CS12);
@@ -50,7 +49,7 @@ void PWM_SetPrescaler(PWM_ClockPrescaler Prescaler)
 		Global_Prescaler=1;
 		break;
 		
-		case Prescaler_8:
+		case PWM_Prescaler_8:
 		CLEAR_BIT(TCCR1B,CS10);
 		SET_BIT(TCCR1B,CS11);
 		CLEAR_BIT(TCCR1B,CS12);
@@ -58,7 +57,7 @@ void PWM_SetPrescaler(PWM_ClockPrescaler Prescaler)
 		Global_Prescaler=8;
 		break;
 		
-		case Prescaler_64:
+		case PWM_Prescaler_64:
 		SET_BIT(TCCR1B,CS10);
 		SET_BIT(TCCR1B,CS11);
 		CLEAR_BIT(TCCR1B,CS12);
@@ -66,7 +65,7 @@ void PWM_SetPrescaler(PWM_ClockPrescaler Prescaler)
 		Global_Prescaler=64;
 		break;
 		
-		case Prescaler_256:
+		case PWM_Prescaler_256:
 		CLEAR_BIT(TCCR1B,CS10);
 		CLEAR_BIT(TCCR1B,CS11);
 		SET_BIT(TCCR1B,CS12);
@@ -74,7 +73,7 @@ void PWM_SetPrescaler(PWM_ClockPrescaler Prescaler)
 		Global_Prescaler=256;
 		break;
 		
-		case Prescaler_1024:
+		case PWM_Prescaler_1024:
 		SET_BIT(TCCR1B,CS10);
 		CLEAR_BIT(TCCR1B,CS11);
 		SET_BIT(TCCR1B,CS12);
@@ -82,12 +81,12 @@ void PWM_SetPrescaler(PWM_ClockPrescaler Prescaler)
 		Global_Prescaler=1024;
 		break;
 		
-		case Preascaler_ExClockT1_Falling:
+		case PWM_Preascaler_ExClockT1_Falling:
 		CLEAR_BIT(TCCR1B,CS10);
 		SET_BIT(TCCR1B,CS11);
 		SET_BIT(TCCR1B,CS12);
 		break;
-		case Preascaler_ExClockT1_Rising:
+		case PWM_Preascaler_ExClockT1_Rising:
 		SET_BIT(TCCR1B,CS10);
 		SET_BIT(TCCR1B,CS11);
 		SET_BIT(TCCR1B,CS12);
@@ -134,7 +133,7 @@ void PWM_SetChannels(PWM_Com_OutputMode OutputMode,PWM_Channels Channel)
 		}
 		break;
 		
-		case Clr_OC1A_OC1B_CompMatch:
+		case Clr_OC1A_OC1B_CompMatchNonInvert:
 		if (Channel==OC1A_Pin)
 		{
 			SET_BIT(TCCR1A,COM1A1);
@@ -147,7 +146,7 @@ void PWM_SetChannels(PWM_Com_OutputMode OutputMode,PWM_Channels Channel)
 		}
 		break;
 		
-		case Set_OC1A_OC1B_CompMatch:
+		case Set_OC1A_OC1B_CompMatchInvert:
 		if (Channel==OC1A_Pin)
 		{
 			SET_BIT(TCCR1A,COM1A1);
@@ -267,17 +266,18 @@ void PWM_SetPWM_Freq(uint16 Freq)
 	or OCR1A*/
 	ICR1=(uint16)(F_CPU/(Freq*Global_Prescaler*2));
 }
-
+uint32 Val;
 void PWM_Set_TONus(uint16 Time,PWM_Channels Channel)
 {
-	uint16 Val =(uint16)(Time/((Global_Prescaler/F_CPU)*PWR(10,6)));
+	Val =(uint32)(Time/((Global_Prescaler*1000000)/F_CPU));
+	
 	switch(Channel)
 	{
 		case OC1A_Pin:
-		PWM_Set_OCR1A(Val);
+		PWM_Set_OCR1A((uint16)Val);
 		break;
 		case OC1B_Pin:
-		PWM_Set_OCR1B(Val);
+		PWM_Set_OCR1B((uint16)Val);
 		break;
 		default:
 		break;

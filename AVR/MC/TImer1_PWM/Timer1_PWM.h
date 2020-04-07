@@ -20,8 +20,8 @@ typedef enum
 {
 	Normal_Port_Operation,
 	Tog_OC1A_CompMatch_OC1B_Disconnected,
-	Clr_OC1A_OC1B_CompMatch,
-	Set_OC1A_OC1B_CompMatch
+	Clr_OC1A_OC1B_CompMatchNonInvert,
+	Set_OC1A_OC1B_CompMatchInvert
 }PWM_Com_OutputMode;
 
 typedef enum
@@ -50,14 +50,14 @@ TIMER1_WGM_FPWM_OCR
 
 typedef enum
 {
-	NO_Clock_Source,
-	Prescaler_1,
-	Prescaler_8,
-	Prescaler_64,
-	Prescaler_256,
-	Prescaler_1024,
-	Preascaler_ExClockT1_Falling,
-	Preascaler_ExClockT1_Rising
+	PWM_NO_Clock_Source,
+	PWM_Prescaler_1,
+	PWM_Prescaler_8,
+	PWM_Prescaler_64,
+	PWM_Prescaler_256,
+	PWM_Prescaler_1024,
+	PWM_Preascaler_ExClockT1_Falling,
+	PWM_Preascaler_ExClockT1_Rising
 }PWM_ClockPrescaler;
 typedef struct
 {
