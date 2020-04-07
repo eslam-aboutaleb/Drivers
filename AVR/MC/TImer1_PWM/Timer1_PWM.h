@@ -11,6 +11,11 @@
 #define TIMER1_PWM_ENABLED
 #endif
 
+#ifndef F_CPU
+#define F_CPU 8000000UL
+#endif
+
+
 typedef enum
 {
 	Normal_Port_Operation,
@@ -66,11 +71,12 @@ typedef struct
 
 void PWM_Init(PWM_Typedef *PWM_ConfigPtr);
 void PWM_Stop(void);
-void PWM_Start(PWM_ClockPrescaler Prescaler);
+void PWM_SetPrescaler(PWM_ClockPrescaler Prescaler);
 void PWM_SetChannels(PWM_Com_OutputMode OutputMode,PWM_Channels Channel);
 void PWM_Set_OCR1A(uint16 uiOCR1A);
 void PWM_Set_OCR1B(uint16 uiOCR1B);
-
-
+void PWM_SetFPWM_Freq(uint16 Freq);
+void PWM_SetPWM_Freq(uint16 Freq);
+void PWM_Set_TONus(uint16 Time,PWM_Channels Channel);
 
 #endif /* TIMER1_PWM_H_ */

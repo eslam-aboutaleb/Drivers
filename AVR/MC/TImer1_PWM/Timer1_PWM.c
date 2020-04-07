@@ -8,9 +8,11 @@
 #include "STD_TYPES.h"
 #include "BIT_MATH.h"
 #include "Timer1_PWM.h"
+#include "MathFuncs.h"
 
 static void PWM_SetMode(PWM_Mode Mode);
 
+static uint16 Global_Prescaler=1;
 
 PWM_Init(PWM_Typedef *PWM_ConfigPtr)
 {
@@ -30,7 +32,7 @@ PWM_Init(PWM_Typedef *PWM_ConfigPtr)
 	PWM_SetMode(PWM_ConfigPtr->Mode);
 }
 
-void PWM_Start(PWM_ClockPrescaler Prescaler)
+void PWM_SetPrescaler(PWM_ClockPrescaler Prescaler)
 {
 	switch(Prescaler)
 	{
@@ -38,32 +40,48 @@ void PWM_Start(PWM_ClockPrescaler Prescaler)
 		CLEAR_BIT(TCCR1B,CS10);
 		CLEAR_BIT(TCCR1B,CS11);
 		CLEAR_BIT(TCCR1B,CS12);
+		Prescaler=0;
 		break;
 		case Prescaler_1:
 		SET_BIT(TCCR1B,CS10);
 		CLEAR_BIT(TCCR1B,CS11);
 		CLEAR_BIT(TCCR1B,CS12);
+		
+		Global_Prescaler=1;
 		break;
+		
 		case Prescaler_8:
 		CLEAR_BIT(TCCR1B,CS10);
 		SET_BIT(TCCR1B,CS11);
 		CLEAR_BIT(TCCR1B,CS12);
+		
+		Global_Prescaler=8;
 		break;
+		
 		case Prescaler_64:
 		SET_BIT(TCCR1B,CS10);
 		SET_BIT(TCCR1B,CS11);
 		CLEAR_BIT(TCCR1B,CS12);
+		
+		Global_Prescaler=64;
 		break;
+		
 		case Prescaler_256:
 		CLEAR_BIT(TCCR1B,CS10);
 		CLEAR_BIT(TCCR1B,CS11);
 		SET_BIT(TCCR1B,CS12);
+		
+		Global_Prescaler=256;
 		break;
+		
 		case Prescaler_1024:
 		SET_BIT(TCCR1B,CS10);
 		CLEAR_BIT(TCCR1B,CS11);
 		SET_BIT(TCCR1B,CS12);
+		
+		Global_Prescaler=1024;
 		break;
+		
 		case Preascaler_ExClockT1_Falling:
 		CLEAR_BIT(TCCR1B,CS10);
 		SET_BIT(TCCR1B,CS11);
@@ -234,4 +252,35 @@ void PWM_Set_OCR1A(uint16 uiOCR1A)
 void PWM_Set_OCR1B(uint16 uiOCR1B)
 {
 	OCR1B=uiOCR1B;
+}
+
+void PWM_SetFPWM_Freq(uint16 Freq)
+{
+	/*The PWM resolution for fast PWM can be fixed to 8-bit, 9-bit, or 10-bit, or defined by either ICR1
+	or OCR1A*/
+	ICR1=(uint16)(F_CPU/(Freq*Global_Prescaler))-1;
+}
+
+void PWM_SetPWM_Freq(uint16 Freq)
+{
+	/*The PWM resolution for Phase correct PWM can be fixed to 8-bit, 9-bit, or 10-bit, or defined by either ICR1
+	or OCR1A*/
+	ICR1=(uint16)(F_CPU/(Freq*Global_Prescaler*2));
+}
+
+void PWM_Set_TONus(uint16 Time,PWM_Channels Channel)
+{
+	uint16 Val =(uint16)(Time/((Global_Prescaler/F_CPU)*PWR(10,6)));
+	switch(Channel)
+	{
+		case OC1A_Pin:
+		PWM_Set_OCR1A(Val);
+		break;
+		case OC1B_Pin:
+		PWM_Set_OCR1B(Val);
+		break;
+		default:
+		break;
+	}
+	
 }
