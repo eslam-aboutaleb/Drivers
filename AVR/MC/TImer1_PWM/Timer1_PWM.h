@@ -15,6 +15,11 @@
 #define F_CPU 8000000UL
 #endif
 
+#define PWM_OCR1A_PORT    'C'
+#define PWM_OCR1B_PORT    'C'
+
+#define PWM_OCR1A_PIN      5
+#define PWM_OCR1B_PIN      4
 
 typedef enum
 {
@@ -59,6 +64,7 @@ typedef enum
 	PWM_Preascaler_ExClockT1_Falling,
 	PWM_Preascaler_ExClockT1_Rising
 }PWM_ClockPrescaler;
+
 typedef struct
 {
 	PWM_Com_OutputMode COM_Mode;

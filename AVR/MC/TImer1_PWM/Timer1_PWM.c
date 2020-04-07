@@ -19,9 +19,13 @@ PWM_Init(PWM_Typedef *PWM_ConfigPtr)
 	switch(PWM_ConfigPtr->Channel)
 	{
 		case OC1A_Pin:
+		DIO_InitPin(PWM_OCR1A_PORT,PWM_OCR1A_PIN,OUTPUT,STD_LOW);
+		
 		PWM_Set_OCR1A(PWM_ConfigPtr->uiOCR1A);
 		break;
 		case OC1B_Pin:
+		DIO_InitPin(PWM_OCR1B_PORT,PWM_OCR1B_PIN,OUTPUT,STD_LOW);
+		
 		PWM_Set_OCR1A(PWM_ConfigPtr->uiOCR1B);
 		break;
 		default:
