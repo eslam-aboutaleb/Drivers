@@ -1,6 +1,6 @@
 #include "STD_TYPES.h"
 #include "BIT_MATH.h"
-#include "RCC_private.h"
+#include "RCC_interface.h"
 #include "GPIO_private.h"
 #include "GPIO_interface.h"
 
@@ -19,30 +19,30 @@ void GPIO_Init(GPIO_TypeDef *GPIOx ,GPIO_ConfigType *GPIOxConfig)
 }
 
 /*Quick function to init port pin as high speed with no pull mode*/
-/*
+
 void GPIO_InitPortPin(GPIO_TypeDef *GPIOx ,uint16 Pin ,uint32 Mode)
 {
 	GPIO_ConfigType GPIO_Pin_Conf;
 	
 	if(GPIOx==GPIOA)
 	{
-		RCC_GPIOA_CLK_ENABLE;
+		RCC_GPIOA_CLK_ENABLE();
 	}
 	else if(GPIOx==GPIOB)
 	{
-		RCC_GPIOB_CLK_ENABLE;
+		RCC_GPIOB_CLK_ENABLE();
 	}
 	else if(GPIOx==GPIOC)
 	{
-		RCC_GPIOC_CLK_ENABLE;
+		RCC_GPIOC_CLK_ENABLE();
 	}
 	else if(GPIOx==GPIOD)
 	{
-		RCC_GPIOD_CLK_ENABLE;
+		RCC_GPIOD_CLK_ENABLE();
 	}
 	else if(GPIOx==GPIOE)
 	{
-		RCC_GPIOE_CLK_ENABLE;
+		RCC_GPIOE_CLK_ENABLE();
 	}
 	
 	GPIO_Pin_Conf.GPIO_PinMode=Mode;
@@ -53,7 +53,7 @@ void GPIO_InitPortPin(GPIO_TypeDef *GPIOx ,uint16 Pin ,uint32 Mode)
 	
 	GPIO_Init(GPIOx,&GPIO_Pin_Conf);
 }
-*/
+
 void GPIO_ConfgPin_Mode(GPIO_TypeDef *GPIOx ,uint16 Pin ,uint32 Mode)
 {
 	GPIOx->MODER |= (Mode << (2 * Pin)); /*Each pin has 2 bits in MODER register*/
@@ -93,6 +93,7 @@ uint8 GPIO_ReadPortPin(GPIO_TypeDef *GPIOx ,uint16 Pin)
 {
 	uint8 val;
 	val=((GPIOx->IDR >> Pin)&0x00000001);
+	return val;
 }
 
 uint8 GPIO_WritePortPin(GPIO_TypeDef *GPIOx ,uint16 Pin ,uint8 Val)
